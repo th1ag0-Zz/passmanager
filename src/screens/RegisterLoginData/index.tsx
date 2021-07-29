@@ -42,13 +42,20 @@ export function RegisterLoginData() {
       ...formData,
     }
 
-    const storage = await AsyncStorage.getItem(dataKey)
-    const storageParsed = storage ? JSON.parse(storage) : []
+    try {
+      const storage = await AsyncStorage.getItem(dataKey)
+      const storageParsed = storage ? JSON.parse(storage) : []
 
-    await AsyncStorage.setItem(
-      dataKey,
-      JSON.stringify([...storageParsed, newLoginData]),
-    )
+      await AsyncStorage.setItem(
+        dataKey,
+        JSON.stringify([...storageParsed, newLoginData]),
+      )
+
+      reset()
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Erro', 'Não foi possível salvar os dados')
+    }
   }
 
   return (
